@@ -96,7 +96,9 @@ class Blog extends AdminController
         $blog = $this->Model->map($post, array('post_id', 'Post_Categories', 'category_id'), 'Categories', false);
         if ($this->request->is('post')) {
             extract($this->request->data);
-            $post->copyfrom('POST');
+				$post->copyfrom('POST', function($arr){	//ensures parameters can't be added - they must match the given array of keys
+					return array_intersect_key($arr, array_flip(array('title','summary','content','published')));
+				});
             $post->modified = mydate();
             $post->user_id = $this->Auth->user('id');
 
