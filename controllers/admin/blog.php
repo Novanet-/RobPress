@@ -26,7 +26,7 @@ class Blog extends AdminController
                 $cat->erase();
             }
 
-            //deletes all associated comments
+            //Delete comments
             $comments = $this->Model->Comments->fetchAll(array('blog_id' => $postid));
             foreach ($comments as $comment) {
                 $comment->erase();
@@ -44,35 +44,38 @@ class Blog extends AdminController
         if ($this->request->is('post')) {
             $post = $this->Model->Posts;
             extract($this->request->data);
-            $post->title = $title;
-            $post->content = $content;
-            $post->summary = $summary;
-            $post->user_id = $this->Auth->user('id');
-            $post->created = $post->modified = mydate();
-
-            //Determine whether to publish or draft
-            if (!isset($Publish)) {
-                $post->published = null;
+            if ($title == "") {        //Don't allow blogs without titles
+                \StatusMessage::add('Invalid post title, can\'t be empty','danger');
             } else {
-                $post->published = mydate($this->request->data['published']);
-            }
+                $post->title = h($title);        //Escaping special character
+                $post->summary = h($summary);
+                $post->content = $content;        
+                $post->user_id = $this->Auth->user('id');
+                $post->created = $post->modified = mydate();
 
-            //Save post
-            $post->save();
-            $postid = $post->id;
+                //Determine whether to publish or draft
+                if (!isset($Publish)) {
+                    $post->published = null;
+                } else {
+                    $post->published = mydate($this->request->data['published']);
+                }
 
-            //Now assign categories
-            $link = $this->Model->Post_Categories;
-            if (!isset($categories)) {
-                $categories = array();
-            }
-            foreach ($categories as $category) {
-                $link->reset();
-                $link->category_id = $category;
-                $link->post_id = $postid;
-                $link->save();
-            }
+                //Save post
+                $post->save();
+                $postid = $post->id;
 
+                //Now assign categories
+                $link = $this->Model->Post_Categories;
+                if (!isset($categories)) {
+                    $categories = array();
+                }
+                foreach ($categories as $category) {
+                    $link->reset();
+                    $link->category_id = $category;
+                    $link->post_id = $postid;
+                    $link->save();
+                }
+            }
             \StatusMessage::add('Post added succesfully', 'success');
             return $f3->reroute('/admin/blog');
         }
@@ -80,8 +83,7 @@ class Blog extends AdminController
         $f3->set('categories', $categories);
     }
 
-    public
-    function edit($f3)
+    public function edit($f3)
     {
         $postid = $f3->get('PARAMS.3');
         $post = $this->Model->Posts->fetchById($postid);
