@@ -101,6 +101,10 @@ class Blog extends AdminController
 				});
             $post->modified = mydate();
             $post->user_id = $this->Auth->user('id');
+				
+				$post->title = h($title);		//doing the same again here
+				$post->summary = h($summary);
+				$post->content = $content;
 
             //Determine whether to publish or draft
             if (!isset($Publish)) {
