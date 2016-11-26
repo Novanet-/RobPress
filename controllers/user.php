@@ -21,10 +21,22 @@ class User extends Controller
         if ($this->request->is('post')) {
             extract($this->request->data);
             $check = $this->Model->Users->fetch(array('username' => h($username)));
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+            $pwvalid = $this->checkPasswordValid($password, $pwerrorlist);
             if (!empty($check)) {
                 StatusMessage::add('User already exists', 'danger');
             } else if ($password != $password2) {
                 StatusMessage::add('Passwords must match', 'danger');
+            } else if (!(isAlphanumericOnly($username))) {
+                StatusMessage::add('Username can only contain alphanumeric characters', 'danger');
+            } else if (!(isAlphanumericOnly($displayname))) {
+                StatusMessage::add('Displayname can only contain alphanumeric characters', 'danger');
+            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                StatusMessage::add('Email invalid', 'danger');
+            } else if (!$pwvalid) {
+                foreach ($pwerrorlist as $errorstring) {
+                    StatusMessage::add($errorstring, 'danger');
+                }
             } else {
                 $user = $this->Model->Users;
                 $user->copyfrom('POST');
@@ -129,6 +141,25 @@ class User extends Controller
         $u->level = 2;
         $u->save();
         return $f3->reroute('/');
+    }
+
+    public function checkPasswordValid($pwd, &$errors)
+    {
+        $errors_init = $errors;
+
+        if (strlen($pwd) < 8) {
+            $errors[] = "Password too short!";
+        }
+
+        if (!preg_match("#[0-9]+#", $pwd)) {
+            $errors[] = "Password must include at least one number!";
+        }
+
+        if (!preg_match("#[a-zA-Z]+#", $pwd)) {
+            $errors[] = "Password must include at least one letter!";
+        }
+
+        return ($errors == $errors_init);
     }
 
 }
