@@ -1,0 +1,6 @@
+*/.idea*
+*idea*
+tmp
+error.log
+/.idea/*
+workspace.xml
