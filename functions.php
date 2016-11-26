@@ -19,6 +19,27 @@ function h($text) {
 	return htmlspecialchars($text);
 }
 
+function s($text)
+{
+    $dom = new DOMDocument();
+    $dom->loadHTML($text);
+
+// Find all the <img> tags
+    $scripts = $dom->getElementsByTagName("script");
+
+// And remove them
+    $scripts_remove = array();
+    foreach ($scripts as $img) {
+        $scripts_remove[] = $img;
+    }
+
+    foreach ($scripts_remove as $i) {
+        $i->parentNode->removeChild($i);
+    }
+    $output = $dom->saveHTML();
+    return $output;
+}
+
 /** Declare constants */
 if (isset($_SERVER['BASE'])) { define('BASE',$_SERVER['BASE']); } else { define('BASE','/'); }
 

@@ -21,16 +21,16 @@ if(!empty($blog['Users'])) {
 }
 ?>
 
-<h3><a href="<?=$site['base']?>/blog/view/<?=$post->id?>"><?=$post->title?></a></h3>
+<h3><a href="<?=$site['base']?>/blog/view/<?=$post->id?>"><?=h($post->title)?></a></h3>
 <h4>Posted by <?=$author->username?> on <?=nicedate($post->created)?></h4>
 <? if(sizeof($blog['Categories']) > 0): ?>
 <p><em>Posted in: 
 <? foreach($blog['Categories'] as $num=>$category): ?>
-<a href="<?=$site['base']?>/blog/index/<?=$category->id?>"><?= $category->title ?></a><? if(($num + 1) < sizeof($blog['Categories'])) { echo ', '; } ?>
+<a href="<?=$site['base']?>/blog/index/<?=$category->id?>"><?= h($category->title) ?></a><? if(($num + 1) < sizeof($blog['Categories'])) { echo ', '; } ?>
 <? endforeach; ?>
 </em></p>
 <? endif; ?>
 
-<?=$post->summary?>
+<?=h($post->summary)?>
 <hr/>
 <?endforeach;?>

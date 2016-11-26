@@ -17,24 +17,24 @@ class Blog extends AdminController
     {
         $postid = $f3->get('PARAMS.3');
         $post = $this->Model->Posts->fetchById($postid);
-        if ($this->request->is('post')) {
-            $post->erase();
 
-            //Remove from categories
-            $cats = $this->Model->Post_Categories->fetchAll(array('post_id' => $postid));
-            foreach ($cats as $cat) {
-                $cat->erase();
-            }
+        $post->erase();
 
-            //Delete comments
-            $comments = $this->Model->Comments->fetchAll(array('blog_id' => $postid));
-            foreach ($comments as $comment) {
-                $comment->erase();
-            }
-
-            \StatusMessage::add('Post deleted succesfully', 'success');
-            return $f3->reroute('/admin/blog');
+        //Remove from categories
+        $cats = $this->Model->Post_Categories->fetchAll(array('post_id' => $postid));
+        foreach ($cats as $cat) {
+            $cat->erase();
         }
+
+        //Delete comments
+        $comments = $this->Model->Comments->fetchAll(array('blog_id' => $postid));
+        foreach ($comments as $comment) {
+            $comment->erase();
+        }
+
+        \StatusMessage::add('Post deleted succesfully', 'success');
+        return $f3->reroute('/admin/blog');
+
         $_POST = $post->cast();
         $f3->set('post', $post);
     }
@@ -45,11 +45,11 @@ class Blog extends AdminController
             $post = $this->Model->Posts;
             extract($this->request->data);
             if ($title == "") {        //Don't allow blogs without titles
-                \StatusMessage::add('Invalid post title, can\'t be empty','danger');
+                \StatusMessage::add('Invalid post title, can\'t be empty', 'danger');
             } else {
-                $post->title = h($title);        //Escaping special character
-                $post->summary = h($summary);
-                $post->content = $content;        
+                $post->title = $title;        //Escaping special character
+                $post->summary = h($summary); //TODO: Sanitise this in HTML
+                $post->content = $content;
                 $post->user_id = $this->Auth->user('id');
                 $post->created = $post->modified = mydate();
 
@@ -86,56 +86,60 @@ class Blog extends AdminController
     public function edit($f3)
     {
         $postid = $f3->get('PARAMS.3');
-			if(empty($postid)) {
-				return $f3->reroute('/admin/blog');
-			}
+        if (empty($postid)) {
+            return $f3->reroute('/admin/blog');
+        }
         $post = $this->Model->Posts->fetchById($postid);
-			if(empty($post['title'])) {
-				return $f3->reroute('/admin/blog');
-			}
+        if (empty($post['title'])) {
+            return $f3->reroute('/admin/blog');
+        }
         $blog = $this->Model->map($post, array('post_id', 'Post_Categories', 'category_id'), 'Categories', false);
         if ($this->request->is('post')) {
             extract($this->request->data);
-				$post->copyfrom('POST', function($arr){	//ensures parameters can't be added - they must match the given array of keys
-					return array_intersect_key($arr, array_flip(array('title','summary','content','published')));
-				});
-            $post->modified = mydate();
-            $post->user_id = $this->Auth->user('id');
-				
-				$post->title = h($title);		//doing the same again here
-				$post->summary = h($summary);
-				$post->content = $content;
-
-            //Determine whether to publish or draft
-            if (!isset($Publish)) {
-                $post->published = null;
+            $post->copyfrom('POST', function ($arr) { //Only allow this set of parameters
+                return array_intersect_key($arr, array_flip(array('title', 'summary', 'content', 'published')));
+            });
+            if (($title == "")) {
+                \StatusMessage::add('Invalid post title, can\'t be empty', 'danger');
             } else {
-                $post->published = mydate($published);
-            }
+                $post->modified = mydate();
+                $post->user_id = $this->Auth->user('id');
 
-            //Save changes
-            $post->save();
+                $post->title = $title;        //doing the same again here
+                $post->summary = h($summary);
+                $post->content = $content;
 
-            $link = $this->Model->Post_Categories;
-            //Remove previous categories
-            $old = $link->fetchAll(array('post_id' => $postid));
-            foreach ($old as $oldcategory) {
-                $oldcategory->erase();
-            }
+                //Determine whether to publish or draft
+                if (!isset($Publish)) {
+                    $post->published = null;
+                } else {
+                    $post->published = mydate($published);
+                }
 
-            //Now assign new categories
-            if (!isset($categories)) {
-                $categories = array();
-            }
-            foreach ($categories as $category) {
-                $link->reset();
-                $link->category_id = $category;
-                $link->post_id = $postid;
-                $link->save();
-            }
+                //Save changes
+                $post->save();
 
-            \StatusMessage::add('Post updated succesfully', 'success');
-            return $f3->reroute('/admin/blog');
+                $link = $this->Model->Post_Categories;
+                //Remove previous categories
+                $old = $link->fetchAll(array('post_id' => $postid));
+                foreach ($old as $oldcategory) {
+                    $oldcategory->erase();
+                }
+
+                //Now assign new categories
+                if (!isset($categories)) {
+                    $categories = array();
+                }
+                foreach ($categories as $category) {
+                    $link->reset();
+                    $link->category_id = $category;
+                    $link->post_id = $postid;
+                    $link->save();
+                }
+
+                \StatusMessage::add('Post updated succesfully', 'success');
+                return $f3->reroute('/admin/blog');
+            }
         }
         $_POST = $post->cast();
         foreach ($blog['Categories'] as $cat) {

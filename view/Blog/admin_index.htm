@@ -27,7 +27,7 @@ if(!empty($blog['Users'])) {
 <tr>
 <td style="font-weight: bold">
 <a style="float: right" href="<?=$site['base']?>/admin/blog/delete/<?=$post['id']?>">&times;</a>
-<a href="<?=$site['base']?>/admin/blog/edit/<?=$post['id']?>"><?=$post['title']?></a>
+<a href="<?=$site['base']?>/admin/blog/edit/<?=$post['id']?>"><?=h($post['title'])?></a>
 </td>
 <td><?=$author->username?></td>
 <td>
@@ -35,7 +35,7 @@ if(!empty($blog['Users'])) {
 <em>Uncategorised</em>
 <?else:?>
 <?foreach($blog['Categories'] as $id=>$category):?>
-<?=$category['title']?>
+<?=h($category['title'])?>
 <? if($id < (sizeof($blog['Categories']) - 1)) { echo ', '; } ?>
 <?endforeach;?>
 <?endif;?>
