@@ -86,7 +86,13 @@ class Blog extends AdminController
     public function edit($f3)
     {
         $postid = $f3->get('PARAMS.3');
+			if(empty($postid)) {
+				return $f3->reroute('/admin/blog');
+			}
         $post = $this->Model->Posts->fetchById($postid);
+			if(empty($post['title'])) {
+				return $f3->reroute('/admin/blog');
+			}
         $blog = $this->Model->map($post, array('post_id', 'Post_Categories', 'category_id'), 'Categories', false);
         if ($this->request->is('post')) {
             extract($this->request->data);
