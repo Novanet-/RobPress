@@ -55,7 +55,11 @@ class Blog extends Controller {
 		$post = $this->Model->Posts->fetch($id);
 		if($this->request->is('post')) {
 			$comment = $this->Model->Comments;
-			$comment->copyfrom('POST');
+			$comment->copyfrom('POST', function($arr){
+				$parameters = array_intersect_key($arr, array_flip(array('user_id','subject','message')));
+				$parameters['user_id']=$this->Auth->user('id');	//Prevents user from posting a comment as someone else
+				return $parameters;
+			});
 			$comment->blog_id = $id;
 			$comment->created = mydate();
 
@@ -107,7 +111,7 @@ class Blog extends Controller {
 			$f3->set('search',$search);
 
 			//Get search results
-			$search = str_replace("*","%",$search); //Allow * as wildcard
+			$search = h(str_replace("*","%",$search)); //Allow * as wildcard
 			$ids = $this->db->connection->exec("SELECT id FROM `posts` WHERE `title` LIKE \"%$search%\" OR `content` LIKE '%$search%'");
 			$ids = Hash::extract($ids,'{n}.id');
 			if(empty($ids)) {
