@@ -111,8 +111,13 @@ class Blog extends Controller {
 			$f3->set('search',$search);
 
 			//Get search results
-			$search = h(str_replace("*","%",$search)); //Allow * as wildcard
-			$ids = $this->db->connection->exec("SELECT id FROM `posts` WHERE `title` LIKE \"%$search%\" OR `content` LIKE '%$search%'");
+			$search = str_replace("*","%",$search); //Allow * as wildcard
+            
+            $query = 'SELECT id FROM posts WHERE title LIKE :search OR content LIKE :search';
+            $args = array(':search' => "%".$search."%");
+            
+            $ids = $this->db->connection->exec($query, $args);
+            
 			$ids = Hash::extract($ids,'{n}.id');
 			if(empty($ids)) {
 				StatusMessage::add('No search results found for ' . $search); 

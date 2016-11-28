@@ -1,5 +1,5 @@
 <? if (!isset($category)): ?>
-    <h2><?= $site['front_title'] ?></h2>
+    <h2><?= h($site['front_title']) ?></h2>
 <? else: ?>
     <h2><?= h($category->title) ?></h2>
 <? endif; ?>
