@@ -1,6 +1,6 @@
 <h2>Error <?= $ERROR['code'] ?>: <?= $ERROR['status'] ?></h2>
 
-<div class="alert alert-danger"><strong>Error</strong>: <?= $ERROR['text'] ?></div>
+<div class="alert alert-danger"><strong>Error</strong>: <?= h($ERROR['text']) ?></div>
 
 <hr/>
 
@@ -14,7 +14,7 @@
 	if(is_array($arg)) { $arg = 'Array[' . sizeof($arg) . ']'; }
 } 
 ?>
-<li><strong><?= $stack['class'] ?><?= $stack['type'] ?><?= $stack['function']?>(<span class="arguments_show"><a href="#"><?= sizeof($stack['args'])?> arguments</a></span><span class="arguments"><?= implode(", ",$stack['args']) ?></span>)</strong> in <?= $stack['file'] ?> on line <strong><?= $stack['line'] ?></strong>
+<li><strong><?= $stack['class'] ?><?= $stack['type'] ?><?= $stack['function']?>(<span class="arguments_show"><a href="#"><?= sizeof($stack['args'])?> arguments</a></span><span class="arguments"><?= h(implode(", ",$stack['args'])) ?></span>)</strong> in <?= $stack['file'] ?> on line <strong><?= $stack['line'] ?></strong>
 <pre>
 <?
 	 $lines = file($stack['file']);
