@@ -21,7 +21,7 @@ class Category extends AdminController
         if ($this->request->is('post')) {
             $category = $this->Model->Categories;
             $category->title = $this->request->data['title'];
-            if (!(isAlphanumericOnly($category->title))) {
+            if (false && !(isAlphanumericOnly($category->title))) {
                 \StatusMessage::add('Category can only contain alphanumeric characters', 'danger');
             } else {
                 $category->save();
