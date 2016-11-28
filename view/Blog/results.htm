@@ -22,7 +22,7 @@ if(!empty($blog['Users'])) {
 ?>
 
 <h3><a href="<?=$site['base']?>/blog/view/<?=$post->id?>"><?=h($post->title)?></a></h3>
-<h4>Posted by <?=$author->username?> on <?=nicedate($post->created)?></h4>
+<h4>Posted by <?=h($author->username)?> on <?=nicedate($post->created)?></h4>
 <? if(sizeof($blog['Categories']) > 0): ?>
 <p><em>Posted in: 
 <? foreach($blog['Categories'] as $num=>$category): ?>

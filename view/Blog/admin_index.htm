@@ -29,7 +29,7 @@ if(!empty($blog['Users'])) {
 <a style="float: right" href="<?=$site['base']?>/admin/blog/delete/<?=$post['id']?>">&times;</a>
 <a href="<?=$site['base']?>/admin/blog/edit/<?=$post['id']?>"><?=h($post['title'])?></a>
 </td>
-<td><?=$author->username?></td>
+<td><?=h($author->username)?></td>
 <td>
 <?if(sizeof($blog['Categories']) == 0):?>
 <em>Uncategorised</em>

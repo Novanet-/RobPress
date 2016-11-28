@@ -1,7 +1,7 @@
 <? if (!isset($category)): ?>
     <h2><?= $site['front_title'] ?></h2>
 <? else: ?>
-    <h2><?= $category->title ?></h2>
+    <h2><?= h($category->title) ?></h2>
 <? endif; ?>
 
 <? foreach ($blogs as $blog): ?>
@@ -19,7 +19,7 @@
 
     ?>
     <h3><a href="<?= $site['base'] ?>/blog/view/<?= $post->id ?>"><?= h($post->title) ?></a></h3>
-    <h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= $author->displayname ?></a>
+    <h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= h($author->displayname) ?></a>
         on <?= nicedate($post->created) ?></h4>
     <? if (sizeof($blog['Categories']) > 0): ?>
         <p><em>Posted in:
