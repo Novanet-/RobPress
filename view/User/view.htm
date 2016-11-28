@@ -11,7 +11,7 @@
 <h4>Articles</h4>
 <ul>
 <?foreach($articles as $article):?>
-<li><a href="<?=$site['base']?>/blog/view/<?=$article->id?>"><?=$article->title?></a><br/><small><?=nicedate($article->published)?></small></li>
+<li><a href="<?=$site['base']?>/blog/view/<?=$article->id?>"><?=h($article->title)?></a><br/><small><?=nicedate($article->published)?></small></li>
 <?endforeach;?>
 </ul>
 

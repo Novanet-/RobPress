@@ -18,8 +18,8 @@
 <tr>
 <? $avatar = empty($u->avatar) ? '/img/avatar.png' : $u->avatar; ?>
 <td><img style="max-width: 32px; height: auto; max-height: 32px;" src="<?=$site['base']?><?=$avatar?>" <?=$avatar?></td>
-<td><a href="<?=$site['base']?>/admin/user/edit/<?=$u->id?>"><?=$u->username?></a></td>
-<td><?=$u->displayname?></td>
+<td><a href="<?=$site['base']?>/admin/user/edit/<?=$u->id?>"><?=h($u->username)?></a></td>
+<td><?=h($u->displayname)?></td>
 <td><?=$u->email?></td>
 <td><?=$u->created?></td>
 <td><?=$types[$u->level]?></td>

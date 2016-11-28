@@ -15,12 +15,12 @@
 <?foreach($unmoderated as $comment): ?>
 <tr>
 <td>
-<a href="<?=$site['base']?>/user/view/<?=$comment['Users']->id?>"><?=$comment['Users']->username?></a>
+<a href="<?=$site['base']?>/user/view/<?=$comment['Users']->id?>"><?=h($comment['Users']->username)?></a>
 </td>
 <td><?=$comment['Comments']->subject?></td>
 <td style="font-size: 80%"><?=$comment['Comments']->message?></td>
 <td>
-<a href="<?=$site['base']?>/blog/view/<?=$comment['Posts']->id?>"><?=$comment['Posts']->title?></a>
+<a href="<?=$site['base']?>/blog/view/<?=$comment['Posts']->id?>"><?=h($comment['Posts']->title)?></a>
 </td>
 <td>
 <a class="btn btn-success" href="<?=$site['base']?>/blog/moderate/<?=$comment['Comments']->id?>/1"><i class="fa fa-check"></i></a>
