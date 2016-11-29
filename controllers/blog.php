@@ -120,7 +120,7 @@ class Blog extends Controller {
             
 			$ids = Hash::extract($ids,'{n}.id');
 			if(empty($ids)) {
-				StatusMessage::add('No search results found for ' . $search); 
+				StatusMessage::add('No search results found for ' . h($search));
 				return $f3->reroute('/blog/search');
 			}
 
