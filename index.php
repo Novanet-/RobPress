@@ -12,7 +12,6 @@ $f3->config('config/db.cfg');
 include_once("bootstrap.php");
 include_once("functions.php");
 
-//$f3->redirect('GET|POST /*', '/');
 
 //Define homepage 
 $f3->route('GET /', 'Blog->index');

@@ -25,7 +25,7 @@ class Form
         $output = '
 				<div class="checkbox">
 				<label>
-				<input type="checkbox" name="' . $options['field'] . '" ' . $checked . ' value="1">' . h($options['label']) . '
+				<input type="checkbox" name="' . $options['field'] . '" ' . $checked . ' value="1">' . h($options['label']) . ' //XSS protection
 				</label>
 				</div>';
         return $output;
@@ -36,7 +36,7 @@ class Form
         $output = '<select class="form-control" id="' . $options['field'] . '" name="' . $options['field'] . '">';
         foreach ($options['items'] as $value => $label) {
             $checked = ($options['value'] == $value) ? 'selected="selected"' : '';
-            $output .= '<option value="' . $value . '" ' . $checked . '>' . h($label) . '</option>';
+            $output .= '<option value="' . $value . '" ' . $checked . '>' . h($label) . '</option>'; //XSS protection
         }
         $output .= '</select>';
         return $output;
@@ -51,7 +51,7 @@ class Form
             $output .= '
 				<div class="checkbox">
 				<label>
-				<input type="checkbox" name="' . $options['field'] . '[]" ' . $checked . ' value="' . $value . '">' . h($label) . '
+				<input type="checkbox" name="' . $options['field'] . '[]" ' . $checked . ' value="' . $value . '">' . h($label) . ' //XSS protection
 				</label>
 				</div>';
         }
@@ -125,7 +125,7 @@ toolbarGroups: [
         if (isset($options['value'])) {
             $options['value'] = $options['value'];
         } else if (isset($_POST[$field])) {
-            $options['value'] = h($_POST[$field]);
+            $options['value'] = h($_POST[$field]); //XSS protection
         } elseif (!isset($options['value']) && isset($options['default'])) {
             $options['value'] = $options['default'];
         } else {
@@ -142,7 +142,6 @@ toolbarGroups: [
         }
 
         $input = $this->$type($options);
-//        $label = h$label);
         $result = <<<EOT
 <div class="form-group">
 <label for="$field">$label</label>

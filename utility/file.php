@@ -8,6 +8,7 @@ class File
         $f3 = Base::instance();
         extract($array);
 
+        //Only allow this set of file extensions to be uplaoded
         $validExtensions = array(
             'png',
             'jpg',
@@ -16,6 +17,7 @@ class File
             'bmg'
         );
 
+        //Only allow these content-types to be uploaded
         $validTypes = array(
             'image/png',
             'image/jpg',
@@ -29,32 +31,28 @@ class File
         $ext = end((explode(".", $name)));
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $type = finfo_file($finfo, $tmp_name);
+        $type = finfo_file($finfo, $tmp_name); //Get content-type
 
-        if (!in_array($ext, $validExtensions)) {
+        if (!in_array($ext, $validExtensions)) { //check file extension against valid set
             foreach ($errors as $key => $val) {
                 $errors['extension'] = true;
             }
         }
 
-        if (!in_array($type, $validTypes)) {
+        if (!in_array($type, $validTypes)) { //check file content-type against valid set
             foreach ($errors as $key => $val) {
                 $errors['type'] = true;
             }
         }
 
-        $size = filesize($tmp_name);
+        $size = filesize($tmp_name); //CGet filesize
 
-        if ($size > 1048576) {    //file must be less than 1MB
+        if ($size > 1048576) {    //File must be less than 1MB
             foreach ($errors as $key => $val) {
                 $errors['size'] = true;
             }
         }
 
-
-        //if(!getimagesize($tmp_name)){
-        //
-        //}
         $valid = true;
 
         foreach ($errors as $key => $val) {

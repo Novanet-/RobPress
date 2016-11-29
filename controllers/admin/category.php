@@ -21,13 +21,11 @@ class Category extends AdminController
         if ($this->request->is('post')) {
             $category = $this->Model->Categories;
             $category->title = $this->request->data['title'];
-            if (false && !(isAlphanumericOnly($category->title))) {
-                \StatusMessage::add('Category can only contain alphanumeric characters', 'danger');
-            } else {
-                $category->save();
 
-                \StatusMessage::add('Category added succesfully', 'success');
-            }
+            $category->save();
+
+            \StatusMessage::add('Category added succesfully', 'success');
+
             return $f3->reroute('/admin/category');
         }
     }

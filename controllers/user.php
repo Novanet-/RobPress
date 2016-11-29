@@ -20,18 +20,19 @@ class User extends Controller
     {
         if ($this->request->is('post')) {
             extract($this->request->data);
-            $check = $this->Model->Users->fetch(array('username' => h($username)));
-            $email = filter_var($email, FILTER_SANITIZE_EMAIL);
-            $pwvalid = $this->checkPasswordValid($password, $pwerrorlist);
+
+            $check = $this->Model->Users->fetch(array('username' => h($username))); //XSS protection
+            $email = filter_var($email, FILTER_SANITIZE_EMAIL); //Remove disallowed characters from email address
+            $pwvalid = $this->checkPasswordValid($password, $pwerrorlist); //Checks that the apssword si logner than 8 characters, and msut contain both letters and numbers
             if (!empty($check)) {
                 StatusMessage::add('User already exists', 'danger');
             } else if ($password != $password2) {
                 StatusMessage::add('Passwords must match', 'danger');
-            } else if (!(isAlphanumericOnly($username))) {
+            } else if (!(isAlphanumericOnly($username))) { //Enforces alphanumeric only usernames
                 StatusMessage::add('Username can only contain alphanumeric characters', 'danger');
-            } else if (!(isAlphanumericOnly($displayname))) {
+            } else if (!(isAlphanumericOnly($displayname))) { //Enforces alphanumeric only display names
                 StatusMessage::add('Displayname can only contain alphanumeric characters', 'danger');
-            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { //Checks that is a valid email address format
                 StatusMessage::add('Email invalid', 'danger');
             } else if (!$pwvalid) {
                 foreach ($pwerrorlist as $errorstring) {
@@ -48,8 +49,8 @@ class User extends Controller
                     $user->displayname = $user->username;
                 }
 
-                $user->username = h($username);
-                $user->displayname = h($user->displayname);
+                $user->username = h($username); //XSS protection
+                $user->displayname = h($user->displayname); ////XSS protection
 
                 //Set the users password
                 $user->setPassword($user->password);

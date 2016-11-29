@@ -67,11 +67,10 @@
 			session_destroy();
 
 			//Setup new session
-			//This will be the same every time so is useless as a session
-			//Also, ewwww MD5?
-			session_id(md5($user['id']));
-			//Jus use the built-in version :S
-//			session_start();
+
+//			session_id(md5($user['id']));
+
+			session_start(); //Used the standard session id, the md5 one wasn't doing much
 
 			//Setup cookie for storing user details and for relogging in
 			setcookie('RobPress_User',base64_encode(serialize($user)),time()+3600*24*30,'/');
