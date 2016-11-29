@@ -47,8 +47,8 @@ class Blog extends AdminController
             if ($title == "") {        //Don't allow blogs without titles
                 \StatusMessage::add('Invalid post title, can\'t be empty', 'danger');
             } else {
-                $post->title = $title;        //Escaping special character
-                $post->summary = h($summary); //TODO: Sanitise this in HTML
+                $post->title = $title;
+                $post->summary = $summary;
                 $post->content = $content;
                 $post->user_id = $this->Auth->user('id');
                 $post->created = $post->modified = mydate();
@@ -106,7 +106,7 @@ class Blog extends AdminController
                 $post->user_id = $this->Auth->user('id');
 
                 $post->title = $title;        //doing the same again here
-                $post->summary = h($summary);
+                $post->summary = $summary;
                 $post->content = $content;
 
                 //Determine whether to publish or draft
