@@ -26,7 +26,7 @@ class Blog extends AdminController
             $cat->erase();
         }
 
-        //Delete comments
+        //Delete comments on blog when blog is delete
         $comments = $this->Model->Comments->fetchAll(array('blog_id' => $postid));
         foreach ($comments as $comment) {
             $comment->erase();
@@ -44,7 +44,7 @@ class Blog extends AdminController
         if ($this->request->is('post')) {
             $post = $this->Model->Posts;
             extract($this->request->data);
-            if ($title == "") {        //Don't allow blogs without titles
+            if ($title == "") {        //Disallow blogs without titles
                 \StatusMessage::add('Invalid post title, can\'t be empty', 'danger');
             } else {
                 $post->title = $title;
@@ -86,17 +86,17 @@ class Blog extends AdminController
     public function edit($f3)
     {
         $postid = $f3->get('PARAMS.3');
-        if (empty($postid)) {
+        if (empty($postid)) { //If no post id specified, redirect
             return $f3->reroute('/admin/blog');
         }
         $post = $this->Model->Posts->fetchById($postid);
-        if (empty($post['title'])) {
+        if (empty($post['title'])) { //If no psot matches that id, then redirect
             return $f3->reroute('/admin/blog');
         }
         $blog = $this->Model->map($post, array('post_id', 'Post_Categories', 'category_id'), 'Categories', false);
         if ($this->request->is('post')) {
             extract($this->request->data);
-            $post->copyfrom('POST', function ($arr) { //Only allow this set of parameters
+            $post->copyfrom('POST', function ($arr) { //Only allow this set of parameters (PARAM MANIPULATION)
                 return array_intersect_key($arr, array_flip(array('title', 'summary', 'content', 'published')));
             });
             if (($title == "")) {
@@ -104,10 +104,6 @@ class Blog extends AdminController
             } else {
                 $post->modified = mydate();
                 $post->user_id = $this->Auth->user('id');
-
-                $post->title = $title;        //doing the same again here
-                $post->summary = $summary;
-                $post->content = $content;
 
                 //Determine whether to publish or draft
                 if (!isset($Publish)) {
