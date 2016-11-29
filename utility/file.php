@@ -26,36 +26,36 @@ class File
             'image/bmg'
         );
 
-        $errors = array('extension' => False, 'type' => False, 'size' => False);
+        $errorlist = array('extension' => False, 'type' => False, 'size' => False);
 
-        $ext = end((explode(".", $name)));
+        $extension = end((explode(".", $name)));
 
-        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-        $type = finfo_file($finfo, $tmp_name); //Get content-type
+        $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+        $type = finfo_file($fileInfo, $temporary_name); //Get content-type
 
-        if (!in_array($ext, $validExtensions)) { //check file extension against valid set
-            foreach ($errors as $key => $val) {
-                $errors['extension'] = true;
+        $size = filesize($temporary_name); //Get filesize
+
+        if ($size > 1048576) {    //File must be less than 1MB
+            foreach ($errorlist as $key => $val) {
+                $errorlist['size'] = true;
             }
         }
 
         if (!in_array($type, $validTypes)) { //check file content-type against valid set
-            foreach ($errors as $key => $val) {
-                $errors['type'] = true;
+            foreach ($errorlist as $key => $val) {
+                $errorlist['type'] = true;
             }
         }
 
-        $size = filesize($tmp_name); //CGet filesize
-
-        if ($size > 1048576) {    //File must be less than 1MB
-            foreach ($errors as $key => $val) {
-                $errors['size'] = true;
+        if (!in_array($extension, $validExtensions)) { //check file extension against valid set
+            foreach ($errorlist as $key => $val) {
+                $errorlist['extension'] = true;
             }
         }
 
         $valid = true;
 
-        foreach ($errors as $key => $val) {
+        foreach ($errorlist as $key => $val) {
             if ($val) {
                 \StatusMessage::add('Invalid file ' . $key, 'danger');
                 $valid = false;
@@ -67,24 +67,24 @@ class File
         }
 
 
-        $name = uniqid() . '.' . $ext;
+        $name = uniqid() . '.' . $extension;
         $directory = getcwd() . '/uploads';
         $destination = $directory . '/' . $name;
-        $webdest = '/uploads/' . $name;
+        $webDestination = '/uploads/' . $name;
 
         //Local files get moved
         if ($local) {
-            if (copy($tmp_name, $destination)) {
+            if (copy($temporary_name, $destination)) {
                 chmod($destination, 0666);
-                return $webdest;
+                return $webDestination;
             } else {
                 return false;
             }
             //POSTed files are done with move_uploaded_file
         } else {
-            if (move_uploaded_file($tmp_name, $destination)) {
+            if (move_uploaded_file($temporary_name, $destination)) {
                 chmod($destination, 0666);
-                return $webdest;
+                return $webDestination;
             } else {
                 return false;
             }
