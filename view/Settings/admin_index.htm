@@ -7,7 +7,7 @@ echo $form->start();
 
 <?foreach($settings as $setting):?>
 <?php
-echo $form->add($setting->setting,array('label' => h($setting->title), 'type' => $setting->type, 'value' => $setting->value));
+echo $form->add($setting->setting,array('label' => h($setting->title), 'type' => $setting->type, 'value' => h($setting->value)));
 ?>
 <?endforeach;?>
 <hr/>
