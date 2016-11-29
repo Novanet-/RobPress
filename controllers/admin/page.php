@@ -15,7 +15,7 @@ class Page extends AdminController
     {
         if ($this->request->is('post')) {
             $pagename = strtolower(str_replace(" ", "_", $this->request->data['title']));
-            if (!(isAlphanumericOnly($pagename))) {
+            if (!(isAlphanumericOnly($pagename))) { //Only allow alphanumeric page titles (filenames have a restricted set of valid characters)
                 \StatusMessage::add('Page name can only contain alphanumeric characters', 'danger');
             } else {
                 $this->Model->Pages->create($pagename);

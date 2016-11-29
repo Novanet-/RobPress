@@ -30,6 +30,10 @@ function h($text)
     return htmlspecialchars($text);
 }
 
+/**Like "h" but only removes script tags, for output where rich formatting is still required, such as the body of a blog post
+ * @param $text
+ * @return string
+ */
 function s($text)
 {
     $dom = new DOMDocument();
@@ -51,6 +55,10 @@ function s($text)
     return $output;
 }
 
+/**Predicate to check if given string contains only alphanumeric characters
+ * @param $string
+ * @return bool
+ */
 function isAlphanumericOnly($string)
 {
     return (preg_match('/[^a-zA-Z0-9_]/', $string) == 0);
