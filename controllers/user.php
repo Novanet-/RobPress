@@ -6,7 +6,13 @@ class User extends Controller
     public function view($f3)
     {
         $userid = $f3->get('PARAMS.3');
+        if (empty($userid)) { //Parameter protection
+            return $f3->reroute('/');
+        }
         $u = $this->Model->Users->fetch($userid);
+        if (empty($u['username'])) { //Parameter protection
+            return $f3->reroute('/');
+        }
 
         $articles = $this->Model->Posts->fetchAll(array('user_id' => $userid));
         $comments = $this->Model->Comments->fetchAll(array('user_id' => $userid));
@@ -40,7 +46,9 @@ class User extends Controller
                 }
             } else {
                 $user = $this->Model->Users;
-                $user->copyfrom('POST');
+                $user->copyfrom('POST', function ($arr) {    //Parameter protection, match be in this set
+                    return array_intersect_key($arr, array_flip(array('username', 'displayname', 'email', 'password', 'password2')));
+                });
                 $user->created = mydate();
                 $user->bio = '';
                 $user->level = 1;
@@ -92,7 +100,7 @@ class User extends Controller
         StatusMessage::add('Logged in succesfully', 'success');
 
         //Redirect to where they came from
-        if (isset($_GET['from'])) {
+        if (isset($_GET['from']) && substr($_GET['from'], 0, 1) == '/') {    //Block rerouting to outside of the domain
             $f3->reroute($_GET['from']);
         } else {
             $f3->reroute('/');
@@ -135,14 +143,16 @@ class User extends Controller
         $f3->set('u', $u);
     }
 
-    public function promote($f3)
-    {
-        $id = $this->Auth->user('id');
-        $u = $this->Model->Users->fetch($id);
-        $u->level = 2;
-        $u->save();
-        return $f3->reroute('/');
-    }
+
+    //Only admins would need to do this, blocked authorisation bypass
+    /*    public function promote($f3)
+        {
+            $id = $this->Auth->user('id');
+            $u = $this->Model->Users->fetch($id);
+            $u->level = 2;
+            $u->save();
+            return $f3->reroute('/');
+        }*/
 
     public function checkPasswordValid($pwd, &$errors)
     {
