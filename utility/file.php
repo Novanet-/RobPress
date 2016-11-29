@@ -31,9 +31,9 @@ class File
         $extension = end((explode(".", $name)));
 
         $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
-        $type = finfo_file($fileInfo, $temporary_name); //Get content-type
+        $type = finfo_file($fileInfo, $tmp_name); //Get content-type
 
-        $size = filesize($temporary_name); //Get filesize
+        $size = filesize($tmp_name); //Get filesize
 
         if ($size > 1048576) {    //File must be less than 1MB
             foreach ($errorlist as $key => $val) {
@@ -74,7 +74,7 @@ class File
 
         //Local files get moved
         if ($local) {
-            if (copy($temporary_name, $destination)) {
+            if (copy($tmp_name, $destination)) {
                 chmod($destination, 0666);
                 return $webDestination;
             } else {
@@ -82,7 +82,7 @@ class File
             }
             //POSTed files are done with move_uploaded_file
         } else {
-            if (move_uploaded_file($temporary_name, $destination)) {
+            if (move_uploaded_file($tmp_name, $destination)) {
                 chmod($destination, 0666);
                 return $webDestination;
             } else {
