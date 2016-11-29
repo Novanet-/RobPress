@@ -23,6 +23,15 @@ class Controller {
 	public function beforeRoute($f3) {
 		$this->request = new Request();
 
+
+		//CSRF protection
+		if($this->request->is('post')){	
+			if($this->request->data["token"] != $f3->get('SESSION.token')){
+				$f3->reroute('/');
+				\StatusMessage::add("CSRF detected","danger");
+			}
+		}
+
 		//Check user
 		$this->Auth->resume();
 
