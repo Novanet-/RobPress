@@ -3,37 +3,37 @@
 <hr/>
 
 <div class="row-fluid">
-<div class="col-md-4">
-<h4>Add New Page</h4>
+    <div class="col-md-4">
+        <h4>Add New Page</h4>
 
-<?php
-	$form = new Form(); 
-	echo $form->start(array('action' => $site['base'].'/admin/page/add'));
-	echo $form->add('title',array('placeholder' => 'Enter Title'));
-	echo $form->add('Add Page',array('type' => 'submit'));
-	echo $form->end();
-?>
+        <?php
+        $form = new Form();
+        echo $form->start(array('action' => $site['base'] . '/admin/page/add'));
+        echo $form->add('title', array('placeholder' => 'Enter Title'));
+        echo $form->add('Add Page', array('type' => 'submit'));
+        echo $form->end();
+        ?>
 
-</div>
-<div class="col-md-8">
-<h4>All Pages</h4>
-<table class="table table-striped table-bordered">
-<thead>
-<tr>
-<th>Page Name</th>
-</thead>
-<tbody>
-<? foreach($pages as $pagetitle=>$page): ?>
-<tr>
-<td style="font-weight: bold">
-<? $pagename = str_ireplace(".html","",$page); ?>
-<a href="<?=$site['base']?>/admin/page/delete/<?=$pagename?>" style="float: right">&times;</a>
-<a href="<?=$site['base']?>/admin/page/edit/<?=$pagename?>"><?=h($pagetitle)?></a>
-</td>
-</tr>
-<? endforeach; ?>
-</tbody>
-</table>
-</div>
+    </div>
+    <div class="col-md-8">
+        <h4>All Pages</h4>
+        <table class="table table-striped table-bordered">
+            <thead>
+            <tr>
+                <th>Page Name</th>
+            </thead>
+            <tbody>
+            <? foreach ($pages as $pagetitle => $page): ?>
+                <tr>
+                    <td style="font-weight: bold">
+                        <? $pagename = str_ireplace(".html", "", $page); ?>
+                        <a href="<?= $site['base'] ?>/admin/page/delete/<?= $pagename ?>" style="float: right">&times;</a>
+                        <a href="<?= $site['base'] ?>/admin/page/edit/<?= $pagename ?>"><?= h($pagetitle) ?></a> //XSS
+                    </td>
+                </tr>
+            <? endforeach; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 

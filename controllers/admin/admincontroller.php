@@ -24,7 +24,8 @@ class AdminController extends \Controller {
 			\StatusMessage::add('Access Denied','danger');
 			return $f3->reroute('/');
 		}
-		
+
+		/*Added proper user authorisation, checks current user's access level*/
 		if($access < $this->level) {
 			\StatusMessage::add('Access Denied','danger');
 			return $f3->reroute('/');

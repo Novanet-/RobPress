@@ -7,30 +7,37 @@
 <h4>Stack Trace</h4>
 
 <div class="well">
-<ol>
-<? foreach($ERROR['trace'] as $stack): ?>
-<? foreach($stack['args'] as &$arg) { 
-	if(is_object($arg)) { $arg = get_class($arg); } 
-	if(is_array($arg)) { $arg = 'Array[' . sizeof($arg) . ']'; }
-} 
-?>
-<li><strong><?= $stack['class'] ?><?= $stack['type'] ?><?= $stack['function']?>(<span class="arguments_show"><a href="#"><?= sizeof($stack['args'])?> arguments</a></span><span class="arguments"><?= h(implode(", ",$stack['args'])) ?></span>)</strong> in <?= $stack['file'] ?> on line <strong><?= $stack['line'] ?></strong>
-<pre>
+    <ol>
+        <? foreach ($ERROR['trace'] as $stack): ?>
+        <? foreach ($stack['args'] as &$arg) {
+            if (is_object($arg)) {
+                $arg = get_class($arg);
+            }
+            if (is_array($arg)) {
+                $arg = 'Array[' . sizeof($arg) . ']';
+            }
+        }
+        ?>
+        <li><strong><?= $stack['class'] ?><?= $stack['type'] ?><?= $stack['function'] ?>(<span class="arguments_show"><a
+                            href="#"><?= sizeof($stack['args']) ?> arguments</a></span><span
+                        class="arguments"><?= h(implode(", ", $stack['args'])) ?></span>)</strong> in <?= $stack['file'] ?> on line //XSS
+            <strong><?= $stack['line'] ?></strong>
+            <pre>
 <?
-	 $lines = file($stack['file']);
-	 echo $lines[$stack['line']-1];
+$lines = file($stack['file']);
+echo $lines[$stack['line'] - 1];
 ?>
 </pre>
-<? endforeach; ?>
-</ol>
+            <? endforeach; ?>
+    </ol>
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
-	$(".arguments").hide();
-	$(".arguments_show").click(function() {
-		$(this).next().show();
-		$(this).hide();
-	});
-});
+    $(document).ready(function () {
+        $(".arguments").hide();
+        $(".arguments_show").click(function () {
+            $(this).next().show();
+            $(this).hide();
+        });
+    });
 </script>

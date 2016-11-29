@@ -1,25 +1,28 @@
 <?php $avatar = empty($u->avatar) ? '/img/avatar.png' : $u->avatar; ?>
 
-<img style="float: right" src="<?=$site['base']?><?=$avatar?>" class="avatar"/>
-<h2><?=$u->displayname?> (<?=$u->username?>)</h2>
+<img style="float: right" src="<?= $site['base'] ?><?= $avatar ?>" class="avatar"/>
+<h2><?= h($u->displayname) ?> (<?= h($u->username) ?>)</h2> //XSS
 
 <h4>Biography</h4>
-<?=$u->bio?>
+<?= h($u->bio) ?> //XSS
 
 <hr/>
 
 <h4>Articles</h4>
 <ul>
-<?foreach($articles as $article):?>
-<li><a href="<?=$site['base']?>/blog/view/<?=$article->id?>"><?=h($article->title)?></a><br/><small><?=nicedate($article->published)?></small></li>
-<?endforeach;?>
+    <? foreach ($articles as $article): ?>
+        <li><a href="<?= $site['base'] ?>/blog/view/<?= $article->id ?>"><?= h($article->title) ?></a><br/> //XSS
+            <small><?= nicedate($article->published) ?></small>
+        </li>
+    <? endforeach; ?>
 </ul>
 
 <hr/>
 
 <h4>Comments</h4>
 <ul>
-<?foreach($comments as $comment):?>
-<li><a href="<?=$site['base']?>/blog/view/<?=$comment->blog_id?>"><?=$comment->subject?></a><br/><small><?=nicedate($comment->created)?></small></li>
-<?endforeach;?>
+    <? foreach ($comments as $comment): ?>
+    <li><a href="<?= $site['base'] ?>/blog/view/<?= $comment->blog_id ?>"><?= h($comment->subject) ?></a><br/> //XSS
+        <small><?= nicedate($comment->created) ?></small>
+        <? endforeach; ?>
 </ul>
