@@ -34,7 +34,19 @@
 		public function login($username,$password) {
 			$f3=Base::instance();						
 			$db = $this->controller->db;
-			$results = $db->query("SELECT * FROM `users` WHERE `username`='$username' AND `password`='$password'");
+
+//            $query = 'SELECT id FROM posts WHERE title LIKE :search OR content LIKE :search';
+//            $args = array(':search' => "%".$search."%");
+//
+//            $ids = $this->db->connection->exec($query, $args);
+
+
+			$query = 'SELECT * FROM users WHERE username=:username AND password=:password';
+			$args = array(':username' => $username, ':password' => $password);
+
+            $results = $db->connection->exec($query, $args);
+
+//            $results = $db->query("SELECT * FROM `users` WHERE `username`='$username' AND `password`='$password'");
 			if (!empty($results)) {		
 				$user = $results[0];	
 				$this->setupSession($user);
@@ -61,7 +73,11 @@
 			session_destroy();
 
 			//Setup new session
-			session_id(md5($user['id']));
+			//This will be the same every time so is useless as a session
+			//Also, ewwww MD5?
+			//session_id(md5($user['id']));
+			//Jus use the built-in version :S
+			session_start();
 
 			//Setup cookie for storing user details and for relogging in
 			setcookie('RobPress_User',base64_encode(serialize($user)),time()+3600*24*30,'/');
