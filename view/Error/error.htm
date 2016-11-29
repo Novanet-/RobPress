@@ -18,9 +18,10 @@
             }
         }
         ?>
+        <!-- XSS Protection -->
         <li><strong><?= $stack['class'] ?><?= $stack['type'] ?><?= $stack['function'] ?>(<span class="arguments_show"><a
                             href="#"><?= sizeof($stack['args']) ?> arguments</a></span><span
-                        class="arguments"><?= h(implode(", ", $stack['args'])) ?></span>)</strong> in <?= $stack['file'] ?> on line //XSS
+                        class="arguments"><?= h(implode(", ", $stack['args'])) ?></span>)</strong> in <?= $stack['file'] ?> on line
             <strong><?= $stack['line'] ?></strong>
             <pre>
 <?

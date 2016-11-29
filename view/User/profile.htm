@@ -3,7 +3,7 @@
 $avatar = empty($u->avatar) ? '/img/avatar.png' : $u->avatar;
 ?>
 <img class="avatar" style="float: right" src="<?= $site['base'] ?><?= $avatar ?>"/>
-<h3><?= h($u->username) ?></h3> //XSS
+<h3><?= h($u->username) ?></h3> <!-- XSS Protection -->
 
 <?php
 

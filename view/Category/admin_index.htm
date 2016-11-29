@@ -27,7 +27,7 @@
                     <td style="font-weight: bold">
                         <a style="float: right"
                            href="<?= $site['base'] ?>/admin/category/delete/<?= $category['id'] ?>">&times;</a>
-                        <a href="<?= $site['base'] ?>/admin/category/edit/<?= $category['id'] ?>"><?= h($category['title']) ?></a> //XSS
+                        <a href="<?= $site['base'] ?>/admin/category/edit/<?= $category['id'] ?>"><?= h($category['title']) ?></a> <!-- XSS Protection -->
                     </td>
                     <td><?= $counts[$category['id']] ?></td>
                 </tr>

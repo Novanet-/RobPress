@@ -16,14 +16,14 @@
         </thead>
         <tbody>
         <? foreach ($unmoderated as $comment): ?>
-            <tr>
+            <tr><!-- sfafa -->
                 <td>
-                    <a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= h($comment['Users']->username) ?></a> //XSS
+                    <a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= h($comment['Users']->username) ?></a> <!-- XSS Protection -->
                 </td>
-                <td><?= h($comment['Comments']->subject) ?></td> //XSS
+                <td><?= h($comment['Comments']->subject) ?></td> <!-- XSS Protection -->
                 <td style="font-size: 80%"><?= $comment['Comments']->message ?></td>
                 <td>
-                    <a href="<?= $site['base'] ?>/blog/view/<?= $comment['Posts']->id ?>"><?= h($comment['Posts']->title) ?></a> //XSS
+                    <a href="<?= $site['base'] ?>/blog/view/<?= $comment['Posts']->id ?>"><?= h($comment['Posts']->title) ?></a> <!-- XSS Protection -->
                 </td>
                 <td>
                     <a class="btn btn-success"
@@ -61,12 +61,12 @@
         <? foreach ($moderated as $comment): ?>
             <tr>
                 <td>
-                    <a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= h($comment['Users']->username) ?></a> //XSS
+                    <a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= h($comment['Users']->username) ?></a> <!-- XSS Protection -->
                 </td>
-                <td><?= h($comment['Comments']->subject) ?></td> //XSS
+                <td><?= h($comment['Comments']->subject) ?></td> <!-- XSS Protection -->
                 <td style="font-size: 80%"><?= $comment['Comments']->message ?></td>
                 <td>
-                    <a href="<?= $site['base'] ?>/blog/view/<?= $comment['Posts']->id ?>"><?= h($comment['Posts']->title) ?></a> //XSS
+                    <a href="<?= $site['base'] ?>/blog/view/<?= $comment['Posts']->id ?>"><?= h($comment['Posts']->title) ?></a> <!-- XSS Protection -->
                 </td>
                 <td>
                     <a class="btn btn-danger"

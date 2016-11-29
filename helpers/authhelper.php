@@ -35,13 +35,7 @@
 			$f3=Base::instance();						
 			$db = $this->controller->db;
 
-//            $query = 'SELECT id FROM posts WHERE title LIKE :search OR content LIKE :search';
-//            $args = array(':search' => "%".$search."%");
-//
-//            $ids = $this->db->connection->exec($query, $args);
-
-
-			$query = 'SELECT * FROM users WHERE username=:username AND password=:password';
+			$query = 'SELECT * FROM users WHERE username=:username AND password=:password'; //SQL protection
 			$args = array(':username' => $username, ':password' => $password);
 
             $results = $db->connection->exec($query, $args);
@@ -75,9 +69,9 @@
 			//Setup new session
 			//This will be the same every time so is useless as a session
 			//Also, ewwww MD5?
-			//session_id(md5($user['id']));
+			session_id(md5($user['id']));
 			//Jus use the built-in version :S
-			session_start();
+//			session_start();
 
 			//Setup cookie for storing user details and for relogging in
 			setcookie('RobPress_User',base64_encode(serialize($user)),time()+3600*24*30,'/');

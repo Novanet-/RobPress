@@ -113,7 +113,7 @@ class Blog extends Controller {
 			//Get search results
 			$search = str_replace("*","%",$search); //Allow * as wildcard
             
-            $query = 'SELECT id FROM posts WHERE title LIKE :search OR content LIKE :search';
+            $query = 'SELECT id FROM posts WHERE title LIKE :search OR content LIKE :search'; //SQL protection
             $args = array(':search' => "%".$search."%");
             
             $ids = $this->db->connection->exec($query, $args);

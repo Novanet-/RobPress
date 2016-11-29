@@ -28,15 +28,15 @@
         <tr>
             <td style="font-weight: bold">
                 <a style="float: right" href="<?= $site['base'] ?>/admin/blog/delete/<?= $post['id'] ?>">&times;</a>
-                <a href="<?= $site['base'] ?>/admin/blog/edit/<?= $post['id'] ?>"><?= h($post['title']) ?></a> //XSS
+                <a href="<?= $site['base'] ?>/admin/blog/edit/<?= $post['id'] ?>"><?= h($post['title']) ?></a> <!-- XSS Protection -->
             </td>
-            <td><?= h($author->username) ?></td> //XSS
+            <td><?= h($author->username) ?></td> <!-- XSS Protection -->
             <td>
                 <? if (sizeof($blog['Categories']) == 0): ?>
                     <em>Uncategorised</em>
                 <? else: ?>
                     <? foreach ($blog['Categories'] as $id => $category): ?>
-                        <?= h($category['title']) ?> //XSS
+                        <?= h($category['title']) ?> <!-- XSS Protection -->
                         <? if ($id < (sizeof($blog['Categories']) - 1)) {
                             echo ', ';
                         } ?>

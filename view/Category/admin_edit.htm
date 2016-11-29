@@ -4,7 +4,7 @@
 <?php
 $form = new Form();
 echo $form->start(array('action' => $site['base'] . '/admin/category/edit/' . $category->id));
-echo $form->add('title', array('value' => h($category->title))); //XSS
+echo $form->add('title', array('value' => h($category->title))); <!-- XSS Protection -->
 echo $form->add('Edit', array('type' => 'submit'));
 echo $form->end();
 ?>

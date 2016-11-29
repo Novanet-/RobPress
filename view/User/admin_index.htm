@@ -21,8 +21,8 @@ $types = array(1 => 'User', 2 => 'Administrator');
         <tr>
             <? $avatar = empty($u->avatar) ? '/img/avatar.png' : $u->avatar; ?>
             <td><img style="max-width: 32px; height: auto; max-height: 32px;" src="<?= $site['base'] ?><?= $avatar ?>" <?= $avatar ?></td>
-            <td><a href="<?= $site['base'] ?>/admin/user/edit/<?= $u->id ?>"><?= h($u->username) ?></a></td> //XSS
-            <td><?= h($u->displayname) ?></td> //XSS
+            <td><a href="<?= $site['base'] ?>/admin/user/edit/<?= $u->id ?>"><?= h($u->username) ?></a></td> <!-- XSS Protection -->
+            <td><?= h($u->displayname) ?></td> <!-- XSS Protection -->
             <td><?= $u->email ?></td>
             <td><?= $u->created ?></td>
             <td><?= $types[$u->level] ?></td>

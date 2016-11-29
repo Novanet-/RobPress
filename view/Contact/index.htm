@@ -15,8 +15,8 @@
 
         $form = new Form();
         echo $form->start();
-        echo $form->add('from', array('type' => 'text', 'value' => h($from))); //XSS
-        echo $form->add('to', array('type' => 'hidden', 'value' => h($to))); //XSS
+        echo $form->add('from', array('type' => 'text', 'value' => h($from))); //XSS Protection
+        echo $form->add('to', array('type' => 'hidden', 'value' => h($to))); //XSS Protection
         echo $form->add('subject', array('type' => 'text'));
         echo $form->add('message', array('type' => 'textarea'));
         echo $form->add('Send', array('type' => 'submit'));

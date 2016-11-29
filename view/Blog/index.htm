@@ -18,20 +18,21 @@
     }
 
     ?>
-    <h3><a href="<?= $site['base'] ?>/blog/view/<?= $post->id ?>"><?= h($post->title) ?></a></h3> //XSS
-    <h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= h($author->displayname) ?></a> //XSS
+    <h3><a href="<?= $site['base'] ?>/blog/view/<?= $post->id ?>"><?= h($post->title) ?></a></h3> <!-- XSS Protection -->
+    <h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= h($author->displayname) ?></a> <!-- XSS Protection -->
         on <?= nicedate($post->created) ?></h4>
     <? if (sizeof($blog['Categories']) > 0): ?>
         <p><em>Posted in:
                 <? foreach ($blog['Categories'] as $num => $category): ?>
+                    <!-- XSS Protection -->
                     <a
-                    href="<?= $site['base'] ?>/blog/index/<?= $category->id ?>"><?= h($category->title) ?></a><? if (($num + 1) < sizeof($blog['Categories'])) { //XSS
+                    href="<?= $site['base'] ?>/blog/index/<?= $category->id ?>"><?= h($category->title) ?></a><? if (($num + 1) < sizeof($blog['Categories'])) {
                         echo ', ';
                     } ?>
                 <? endforeach; ?>
             </em></p>
     <? endif; ?>
 
-    <?= h($post->summary) ?> //XSS
+    <?= h($post->summary) ?> <!-- XSS Protection -->
     <hr/>
 <? endforeach; ?>

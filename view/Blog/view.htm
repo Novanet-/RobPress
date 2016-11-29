@@ -12,13 +12,14 @@ if (!empty($blog['Users'])) {
 
 ?>
 
-<h2><?= h($post->title) ?></h2> //XSS
-<h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= h($author->displayname) ?></a> //XSS
-    on <?= nicedate($post->created) ?></h4>
+<h2><?= h($post->title) ?></h2> <!-- XSS Protection -->
+<h4>Posted by <a href="<?= $site['base'] ?>/user/view/<?= $author->id ?>"><?= h($author->displayname) ?></a>
+    on <?= nicedate($post->created) ?></h4> <!-- XSS Protection -->
 <? if (sizeof($blog['Categories']) > 0): ?>
     <p><em>Posted in:
             <? foreach ($blog['Categories'] as $num => $category): ?>
-                <a href="<?= $site['base'] ?>/blog/index/<?= $category->id ?>"><?= h($category->title) //XSS
+                <!-- XSS Protection -->
+                <a href="<?= $site['base'] ?>/blog/index/<?= $category->id ?>"><?= h($category->title)
                 ?></a><? if (($num + 1) < sizeof($blog['Categories'])) {
                     echo ', ';
                 } ?>
@@ -51,8 +52,9 @@ if (!empty($blog['Users'])) {
                 ?>
                 <div class="comment <?= $class ?>">
                     <?php $avatar = empty($u->avatar) ? '/img/avatar.png' : $comment['Users']->avatar; ?>
-                    <h4><?= h($comment['Comments']->subject) ?> <span style="float: right"> //XSS
-<a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= $comment['Users']->displayname ?></a>
+                    <!-- XSS Protection -->
+                    <h4><?= h($comment['Comments']->subject) ?> <span style="float: right">
+<a href="<?= $site['base'] ?>/user/view/<?= $comment['Users']->id ?>"><?= h($comment['Users']->displayname) ?></a> <!-- XSS Protection -->
 <br/><img src="<?= $site['base'] ?><?= $avatar ?>" class="avatar"/></span></h4>
                     <h6><?= nicedate($comment['Comments']->created) ?></h6>
                     <?= $comment['Comments']->message ?>
